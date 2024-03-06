@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:news_application_assignment/dependency_injections.dart';
 
-void main() {
+Future<void> main() async {
+  await initialiseDependencied();
   runApp(const MyApp());
 }
 
