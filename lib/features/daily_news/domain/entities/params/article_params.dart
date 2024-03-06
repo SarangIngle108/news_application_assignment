@@ -1,10 +1,13 @@
 import 'package:equatable/equatable.dart';
 
 class ArticleParams extends Equatable {
-  final String country;
-  final String category;
-  const ArticleParams({required this.country, required this.category});
+  // final String country;
+  // final String category;
+  final String sources;
+  const ArticleParams({
+    required this.sources,
+  });
 
   @override
-  List<Object?> get props => [country, category];
+  List<Object?> get props => [sources];
 }

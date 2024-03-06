@@ -14,19 +14,17 @@ class ApiHandler {
 
   Future<Either<AppError, List<ArticleModel>>> getNewsArticle(
       ArticleParams params) async {
+    var client = http.Client();
     List<ArticleModel> articles = [];
     try {
       final query = <dynamic>[];
       query.add('apiKey=${Constants.apiKey}');
 
-      if (params.category != '') {
-        query.add('category=${params.category}');
-      }
-      if (params.country != '') {
-        query.add('country=${params.country}');
+      if (params.sources != '') {
+        query.add('sources=${params.sources}');
       }
 
-      final response = await http.get(Uri.parse(
+      final response = await client.get(Uri.parse(
           '${Constants.newsApiBaseURL}/top-headlines?${query.join('&')}'));
       var body = jsonDecode(response.body);
 
