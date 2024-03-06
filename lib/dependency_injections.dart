@@ -15,7 +15,8 @@ Future<void> initialiseDependencied() async {
       ArticleRepositoryImplementation(apiHandler: dependency()));
 
 //use case
-  dependency.registerSingleton<GetArticle>(GetArticle());
+  dependency
+      .registerSingleton<GetArticle>(GetArticle(repository: dependency()));
 
   //bloc
   dependency.registerFactory<NewsArticleBloc>(
