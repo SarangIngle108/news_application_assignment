@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
 import 'package:news_application_assignment/core/constants/constants.dart';
-import 'package:news_application_assignment/core/models/api_response_model.dart';
+
 import 'package:news_application_assignment/features/daily_news/data/models/article.dart';
 import 'package:news_application_assignment/features/daily_news/domain/entities/app_error.dart';
 import 'package:news_application_assignment/features/daily_news/domain/entities/params/article_params.dart';
@@ -14,6 +14,7 @@ class ApiHandler {
 
   Future<Either<AppError, List<ArticleModel>>> getNewsArticle(
       ArticleParams params) async {
+    List<ArticleModel> articles = [];
     try {
       final query = <dynamic>[];
       query.add('apiKey=${Constants.apiKey}');
@@ -27,11 +28,17 @@ class ApiHandler {
 
       final response = await http.get(Uri.parse(
           '${Constants.newsApiBaseURL}/top-headlines?${query.join('&')}'));
-      final body = apiResponseModelFromJson(response.body);
-      if (response.statusCode == HttpStatus.accepted) {
-        return Right(body.articles);
+      var body = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        for (int i = 0; i < body['articles'].length; ++i) {
+          ArticleModel article = ArticleModel.fromJson(body['articles'][i]);
+          articles.add(article);
+        }
+
+        return Right(articles);
       } else {
-        return left(AppError('Something went wrong'));
+        return left(const AppError('Something went wrong'));
       }
     } catch (e) {
       return Left(AppError(e.toString()));
