@@ -18,7 +18,7 @@ class ApiResponseModel {
 
   factory ApiResponseModel.fromJson(Map<String, dynamic> json) =>
       ApiResponseModel(
-        articles: json['data'] as Map<String, dynamic>? ??
+        articles: json['articles'] as Map<String, dynamic>? ??
             json['error'] as Map<String, dynamic>? ??
             ApiResponseError(
               message: 'Something went wrong...',
