@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news_application_assignment/config/theme/text_style.dart';
+import 'package:news_application_assignment/core/util/utils.dart';
 import 'package:news_application_assignment/features/daily_news/data/models/article.dart';
 
 class NewsDetailPage extends StatelessWidget {
@@ -50,7 +51,7 @@ class NewsDetailPage extends StatelessWidget {
                               articleModel.source.name,
                               style: ThemeText.s20w300,
                             ),
-                            Text(articleModel.publishedAt)
+                            Text(formattedDate(articleModel.publishedAt))
                           ],
                         ),
                         SizedBox(height: 16.h),

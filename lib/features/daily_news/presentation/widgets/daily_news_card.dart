@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news_application_assignment/config/theme/text_style.dart';
+import 'package:news_application_assignment/core/util/utils.dart';
 
 class DailyNewsCard extends StatelessWidget {
   final String imageUrl;
@@ -83,7 +84,7 @@ class DailyNewsCard extends StatelessWidget {
                               ),
                               SizedBox(width: 20.w),
                               Text(
-                                date,
+                                formattedDate(date),
                                 style: ThemeText.s12w800,
                               ),
                             ],
