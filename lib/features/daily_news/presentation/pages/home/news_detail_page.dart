@@ -6,7 +6,7 @@ import 'package:news_application_assignment/features/daily_news/data/models/arti
 
 class NewsDetailPage extends StatelessWidget {
   final ArticleModel articleModel;
-  NewsDetailPage({super.key, required this.articleModel});
+  const NewsDetailPage({super.key, required this.articleModel});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class NewsDetailPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.w),
             child: SafeArea(
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

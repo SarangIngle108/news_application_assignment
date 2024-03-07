@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application_assignment/config/theme/colors.dart';
 import 'package:news_application_assignment/config/theme/text_style.dart';
+import 'package:news_application_assignment/features/daily_news/data/models/article.dart';
 import 'package:news_application_assignment/features/daily_news/domain/entities/params/article_params.dart';
 import 'package:news_application_assignment/features/daily_news/presentation/bloc/article/remote/news_article_bloc.dart';
 import 'package:news_application_assignment/features/daily_news/presentation/pages/home/news_detail_page.dart';
@@ -15,9 +16,9 @@ class DailyNews extends StatefulWidget {
 }
 
 class _DailyNewsState extends State<DailyNews> {
-  @override
-  void initState() {
-    super.initState();
+  Future refresh() async {
+    BlocProvider.of<NewsArticleBloc>(context).add(NewArticleEventFetchData(
+        params: const ArticleParams(sources: 'techcrunch')));
   }
 
   @override
@@ -35,24 +36,28 @@ class _DailyNewsState extends State<DailyNews> {
       body: BlocBuilder<NewsArticleBloc, NewsArticleState>(
         builder: (context, state) {
           if (state is NewsArticleDataFetchState) {
-            return ListView.builder(
-                shrinkWrap: true,
-                itemCount: state.articles.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => NewsDetailPage(
-                              articleModel: state.articles[index])));
-                    },
-                    child: DailyNewsCard(
-                      imageUrl: state.articles[index].urlToImage,
-                      headline: state.articles[index].description,
-                      name: state.articles[index].source.name,
-                      date: state.articles[index].publishedAt,
-                    ),
-                  );
-                });
+            return RefreshIndicator(
+              onRefresh: refresh,
+              child: ListView.builder(
+                  //    shrinkWrap: true,
+                  itemCount: state.articles.length,
+                  itemBuilder: (context, index) {
+                    ArticleModel articleModel = state.articles[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                NewsDetailPage(articleModel: articleModel)));
+                      },
+                      child: DailyNewsCard(
+                        imageUrl: articleModel.urlToImage,
+                        headline: articleModel.description,
+                        name: articleModel.source.name,
+                        date: articleModel.publishedAt,
+                      ),
+                    );
+                  }),
+            );
           } else if (state is NewsArticleLoadingState) {
             return const Center(
               child: CircularProgressIndicator(),
